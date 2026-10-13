@@ -107,7 +107,6 @@ export async function updateProductAction(
       stock_quantity: stock,
     })
     .eq('id', id)
-    .eq('store', store)
 
   if (error) {
     return { error: error.message }
@@ -123,8 +122,7 @@ export async function deleteProductAction(id: string) {
   if ('error' in auth) return { error: auth.error }
 
   const db = adminDb()
-  const store = await getStoreId()
-  const { data: product } = await db.from('products').select('name').eq('id', id).eq('store', store).maybeSingle()
+  const { data: product } = await db.from('products').select('name').eq('id', id).maybeSingle()
   if (!product) {
     return { error: 'Product not found.' }
   }
@@ -139,7 +137,7 @@ export async function deleteProductAction(id: string) {
     return { error: snapshotError.message }
   }
 
-  const { error } = await db.from('products').delete().eq('id', id).eq('store', store)
+  const { error } = await db.from('products').delete().eq('id', id)
   if (error) {
     return { error: error.message }
   }

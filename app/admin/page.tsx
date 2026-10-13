@@ -8,7 +8,7 @@ export default async function AdminDashboard() {
   const supabase = createServiceRoleClient()
   const storeId = await getStoreId()
 
-  const { data: products } = await supabase.from('products').select('id, price').eq('store', storeId)
+  const { data: products } = await supabase.from('products').select('id, price')
 
   const { data: tours } = await supabase.from('tours').select('id, price').eq('store', storeId)
 

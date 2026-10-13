@@ -1,7 +1,6 @@
 import { ensurePublicUserRowForAuthUser } from '@/lib/auth/ensure-public-user'
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
-import { getStoreId } from '@/lib/store'
 
 function parsePositiveInt(value: unknown, fallback = 1, max = 9999): number {
   const n = Number(value)
@@ -73,12 +72,10 @@ export async function POST(request: Request) {
 
     const quantity = parsePositiveInt(rawQuantity, 1)
 
-    const storeId = await getStoreId(request)
     const { data: product, error: productError } = await supabase
       .from('products')
       .select('id, price, stock_quantity')
       .eq('id', product_id)
-      .eq('store', storeId)
       .maybeSingle()
 
     if (productError) throw productError
