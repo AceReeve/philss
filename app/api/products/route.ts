@@ -129,7 +129,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
     const filters = { ...parseProductListFilters(searchParams), store: await getStoreId(request) }
-    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10) || 1))
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10) || 1)
     const limit = 12
 
     let products: ProductRow[] = []
