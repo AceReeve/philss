@@ -6,6 +6,7 @@ import { fetchUserRoleForAdmin, isAdmin } from '@/lib/auth/is-admin'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { DEFAULT_TOUR_CATEGORY } from '@/lib/tours/constants'
+import { getStoreId } from '@/lib/store'
 
 export type CatalogFormState = { error: string } | null
 
@@ -53,6 +54,7 @@ export async function createProductAction(
     return { error: 'Name, price, and stock are required.' }
   }
 
+  const store = await getStoreId()
   const { error } = await adminDb().from('products').insert({
     name,
     description,
@@ -60,6 +62,7 @@ export async function createProductAction(
     category,
     image_url: image_url || null,
     stock_quantity: stock,
+    store,
   })
 
   if (error) {
@@ -92,6 +95,7 @@ export async function updateProductAction(
     return { error: 'Name, price, and stock are required.' }
   }
 
+  const store = await getStoreId()
   const { error } = await adminDb()
     .from('products')
     .update({
@@ -103,6 +107,7 @@ export async function updateProductAction(
       stock_quantity: stock,
     })
     .eq('id', id)
+    .eq('store', store)
 
   if (error) {
     return { error: error.message }
@@ -118,7 +123,8 @@ export async function deleteProductAction(id: string) {
   if ('error' in auth) return { error: auth.error }
 
   const db = adminDb()
-  const { data: product } = await db.from('products').select('name').eq('id', id).maybeSingle()
+  const store = await getStoreId()
+  const { data: product } = await db.from('products').select('name').eq('id', id).eq('store', store).maybeSingle()
   if (!product) {
     return { error: 'Product not found.' }
   }
@@ -133,7 +139,7 @@ export async function deleteProductAction(id: string) {
     return { error: snapshotError.message }
   }
 
-  const { error } = await db.from('products').delete().eq('id', id)
+  const { error } = await db.from('products').delete().eq('id', id).eq('store', store)
   if (error) {
     return { error: error.message }
   }
@@ -169,6 +175,7 @@ export async function createTourAction(
     return { error: 'Package name, destination, price, duration, and max participants are required.' }
   }
 
+  const store = await getStoreId()
   const { error } = await adminDb().from('tours').insert({
     name,
     destination,
@@ -178,6 +185,7 @@ export async function createTourAction(
     duration_days,
     max_participants,
     image_url: image_url || null,
+    store,
   })
 
   if (error) {
@@ -220,6 +228,7 @@ export async function updateTourAction(
     return { error: 'Package name, destination, price, duration, and max participants are required.' }
   }
 
+  const store = await getStoreId()
   const { error } = await adminDb()
     .from('tours')
     .update({
@@ -233,6 +242,7 @@ export async function updateTourAction(
       image_url: image_url || null,
     })
     .eq('id', id)
+    .eq('store', store)
 
   if (error) {
     return { error: error.message }
@@ -247,7 +257,8 @@ export async function deleteTourAction(id: string) {
   const auth = await requireAdmin()
   if ('error' in auth) return { error: auth.error }
 
-  const { error } = await adminDb().from('tours').delete().eq('id', id)
+  const store = await getStoreId()
+  const { error } = await adminDb().from('tours').delete().eq('id', id).eq('store', store)
   if (error) {
     return { error: error.message }
   }

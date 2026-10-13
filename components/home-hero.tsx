@@ -8,9 +8,9 @@ import Image from 'next/image'
  * for a true multi-photo carousel like rajfitouts.
  */
 const HERO_SLIDES: { src: string; imgClass: string }[] = [
-  { src: '/golfbg.jpg', imgClass: 'object-cover object-center' },
-  { src: '/hero-2.png', imgClass: 'object-cover object-[72%_center]' },
-  { src: '/hero-3.png', imgClass: 'object-cover object-[28%_center]' },
+  { src: '/philss-hero-1.jpg', imgClass: 'object-cover object-center' },
+  { src: '/philss-hero-2.jpg', imgClass: 'object-cover object-[55%_center]' },
+  { src: '/philss-hero-3.jpg', imgClass: 'object-cover object-center' },
 ]
 
 const INTERVAL_MS = 3000

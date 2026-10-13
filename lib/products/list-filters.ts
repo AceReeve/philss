@@ -2,6 +2,7 @@ export type ProductListFilters = {
   search: string | null
   minPrice: number | null
   maxPrice: number | null
+  store?: string | null
 }
 
 export function parseProductListFilters(searchParams: URLSearchParams): ProductListFilters {
@@ -26,6 +27,7 @@ function parsePrice(value: string): number | null {
 }
 
 type FilterableQuery = {
+  eq(column: string, value: string): FilterableQuery
   ilike(column: string, pattern: string): FilterableQuery
   gte(column: string, value: number): FilterableQuery
   lte(column: string, value: number): FilterableQuery
@@ -36,6 +38,9 @@ export function applyProductListFilters<T extends FilterableQuery>(
   filters: ProductListFilters
 ): T {
   let next = query
+  if (filters.store) {
+    next = next.eq('store', filters.store) as T
+  }
   if (filters.search) {
     next = next.ilike('name', `%${filters.search}%`) as T
   }

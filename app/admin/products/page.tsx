@@ -2,14 +2,17 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Edit2, Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { getStoreId } from '@/lib/store'
 import { DeleteCatalogButton } from '@/components/admin/delete-catalog-button'
 import { formatPeso } from '@/lib/currency/format'
 
 export default async function AdminProductsPage() {
   const supabase = await createClient()
+  const storeId = await getStoreId()
   const { data: products } = await supabase
     .from('products')
     .select('*')
+    .eq('store', storeId)
     .order('created_at', { ascending: false })
 
   return (

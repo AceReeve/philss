@@ -3,11 +3,13 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { AdminProductForm } from '@/components/admin/product-form'
+import { getStoreId } from '@/lib/store'
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createClient()
-  const { data: product } = await supabase.from('products').select('*').eq('id', id).maybeSingle()
+  const storeId = await getStoreId()
+  const { data: product } = await supabase.from('products').select('*').eq('id', id).eq('store', storeId).maybeSingle()
 
   if (!product) notFound()
 

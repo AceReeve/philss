@@ -9,6 +9,7 @@ import {
   parseProductListFilters,
   type ProductListFilters,
 } from '@/lib/products/list-filters'
+import { getStoreId } from '@/lib/store'
 
 type ProductRow = {
   id: string
@@ -127,8 +128,8 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
-    const filters = parseProductListFilters(searchParams)
-    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10) || 1)
+    const filters = { ...parseProductListFilters(searchParams), store: await getStoreId(request) }
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10) || 1))
     const limit = 12
 
     let products: ProductRow[] = []
@@ -192,6 +193,7 @@ export async function POST(request: Request) {
     const { name, description, price, category, image_url, stock } = body
 
     const db = createServiceRoleClient()
+    const store = await getStoreId(request)
     const { data, error } = await db.from('products').insert({
       name,
       description,
@@ -199,6 +201,7 @@ export async function POST(request: Request) {
       category,
       image_url,
       stock_quantity: stock,
+      store,
     })
 
     if (error) throw error
