@@ -51,7 +51,10 @@ export default function HomeHero({ children }: { children: React.ReactNode }) {
         </div>
       ))}
 
-      <div className="absolute inset-0 z-[1] bg-black/50" aria-hidden />
+      <div
+        className="absolute inset-0 z-[1] bg-gradient-to-r from-[#10241c]/85 via-[#10241c]/55 to-[#10241c]/25"
+        aria-hidden
+      />
 
       <div className="relative z-[2] w-full">{children}</div>
 

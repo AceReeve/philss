@@ -4,6 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --font-playfair: Georgia, 'Times New Roman', serif;
   /* PHILSS brand palette */
   --brand-blue: #1f4d3a;
   --brand-bronze: #d4b45a;
@@ -82,6 +83,7 @@
 
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
+  --font-serif: var(--font-playfair), Georgia, 'Times New Roman', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);

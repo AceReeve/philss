@@ -87,7 +87,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-primary/10">
+    <header className="sticky top-0 z-50 border-b-2 border-secondary/50 bg-[#f7f4ea]/95 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-[4.5rem] items-center justify-between gap-4 py-2 md:min-h-[5.5rem] md:py-3">
           <Link
